@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MapScreen } from '../screens/Map/Map';
-import { LoginScreen } from '../screens/Login/Login';
+import { AuthScreen } from '../screens/Auth';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,7 +12,7 @@ export const Routes = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Auth" component={AuthScreen} />
       <Stack.Screen name="Home" component={MapScreen} />
     </Stack.Navigator>
   );

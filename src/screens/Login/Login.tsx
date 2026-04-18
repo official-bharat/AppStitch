@@ -5,9 +5,12 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppleIcon, GoogleIcon } from '../../assets';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export const LoginScreen = () => {
   const [activeTab, setActiveTab] = useState('login');
@@ -23,6 +26,39 @@ export const LoginScreen = () => {
   };
   const isRegister = activeTab === 'register';
   const isLogin = activeTab === 'login';
+
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Please enter a valid email')
+      .required('Required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .required('Required'),
+  });
+
+  const {
+    values,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isValid,
+    dirty,
+    touched,
+  } = useFormik({
+    initialValues: {
+      password: '',
+      email: '',
+    },
+    validationSchema: LoginSchema,
+    onSubmit: (val: { email: string; password: string }) => {
+      Alert.alert(JSON.stringify(val, null, 2));
+    },
+  });
+
+  const isInvalidEmail = errors.email && touched.email;
+  const isInvalidPassword = errors.password && touched.password;
+
   return (
     <SafeAreaView style={styles.safeareaView}>
       <View style={styles.container}>
@@ -51,19 +87,44 @@ export const LoginScreen = () => {
             <Text style={styles.inputLabel}>Email Address</Text>
             <TextInput
               placeholder="Enter your email"
-              style={styles.textInputStyle}
+              style={
+                isInvalidEmail ? styles.errorInputStyle : styles.textInputStyle
+              }
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
+              value={values.email}
             />
+            {isInvalidEmail && (
+              <Text style={styles.errorText}>{errors.email}</Text>
+            )}
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.inputLabel}>Password</Text>
             <TextInput
               placeholder="Enter your password"
               secureTextEntry
-              style={styles.textInputStyle}
+              style={
+                isInvalidPassword
+                  ? styles.errorInputStyle
+                  : styles.textInputStyle
+              }
+              onChangeText={handleChange('password')}
+              onBlur={handleBlur('password')}
+              value={values.password}
             />
+            {isInvalidPassword && (
+              <Text style={styles.errorText}>{errors.password}</Text>
+            )}
           </View>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            style={
+              !isValid || !dirty
+                ? styles.disabledContainer
+                : styles.buttonContainer
+            }
+          >
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 
@@ -166,6 +227,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 30,
   },
+  disabledContainer: {
+    backgroundColor: '#C6C6C6',
+    padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    marginTop: 30,
+  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
@@ -201,5 +270,17 @@ const styles = StyleSheet.create({
   },
   signupText: {
     color: '#000',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
+  },
+  errorInputStyle: {
+    borderColor: 'red',
+    borderWidth: 1,
+    marginTop: 8,
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#f8f8f8',
   },
 });

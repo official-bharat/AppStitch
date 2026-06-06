@@ -5,3 +5,15 @@ export { ChatIcon } from './icons/chat';
 export { SettingsIcon } from './icons/settings';
 export { MenuIcon } from './icons/menu';
 export { NotificationIcon } from './icons/notification';
+export { PlayIcon } from './icons/play';
+export { PauseIcon } from './icons/pause';
+export { ForwardIcon } from './icons/forward';
+export { RewindIcon } from './icons/rewind';
+export { StarIcon } from './icons/star';
+export { MoreIcon } from './icons/more';
+export { VolumeLowIcon } from './icons/volumeLow';
+export { VolumeHighIcon } from './icons/volumeHigh';
+export { LyricsIcon } from './icons/lyrics';
+export { AirPlayIcon } from './icons/airplay';
+export { QueueIcon } from './icons/queue';
+

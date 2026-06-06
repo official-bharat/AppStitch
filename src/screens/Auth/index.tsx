@@ -6,7 +6,7 @@ import { styles } from './styles';
 import { LoginScreen } from './Login';
 import { SignupScreen } from './Signup';
 
-export const AuthScreen = () => {
+export const AuthScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState('login');
 
   const handleTabPress = (tab: string) => {

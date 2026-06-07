@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { styles } from '../styles';
 
@@ -16,14 +16,56 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import RNBiometrics from 'react-native-simple-biometrics';
+import { storage } from '../../../services/storage';
 
 export const LoginScreen = ({ onSignup }: { onSignup: () => void }) => {
   const [loading, setLoading] = useState(false);
+
   const { navigate } = useNavigation<
     NativeStackNavigationProp<{
       Home: { fullName: string };
     }>
   >();
+
+  // Now we have to save the biometric authentication result in the local storage and then we can check it in the next login attempt to skip the biometric authentication if the user has already authenticated once. We can use AsyncStorage for this purpose.
+
+  const checkBiometricSupport = async () => {
+    const can = await RNBiometrics.canAuthenticate();
+    console.log('Biometric support:', can);
+    const checkSavedBiometricAuth = async () => {
+      const savedAuth = await storage.getItem('biometricAuth');
+      return savedAuth;
+    };
+    const isAuthenticatedName = await checkSavedBiometricAuth();
+    console.log('Saved biometric authentication:', isAuthenticatedName);
+    // If biometric authentication is supported and there is a saved authentication, prompt the user for biometric authentication
+    if (can && isAuthenticatedName) {
+      try {
+        await RNBiometrics.requestBioAuth(
+          'You can add a description here to explain why you need to use Face ID',
+          'AppStitch needs to use Face ID to authenticate you',
+        ).then(() => {
+          Alert.alert('Authentication successful');
+          navigate('Home', {
+            fullName: isAuthenticatedName,
+          });
+        });
+        // Code to execute when authenticated
+        // ...
+      } catch (error) {
+        console.log('Authentication failed', error);
+        // Code to handle authentication failure
+        // ...
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkBiometricSupport();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Please enter a valid email')
@@ -59,9 +101,11 @@ export const LoginScreen = ({ onSignup }: { onSignup: () => void }) => {
           console.log(res.data, 'response');
           Alert.alert('User Logged in');
           if (res.data.success) {
+            const fullName = res.data.data.user.fullName;
             navigate('Home', {
-              fullName: res.data.data.user.fullName,
+              fullName,
             });
+            storage.setItem('biometricAuth', fullName);
           }
         })
         .catch(err => {

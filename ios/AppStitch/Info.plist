@@ -43,6 +43,8 @@
 	<array>
 		<string>arm64</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>You can add a description here to explain why you need to use Face ID</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

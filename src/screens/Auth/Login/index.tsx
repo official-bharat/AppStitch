@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { styles } from '../styles';
 
-import { Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { AppleIcon, GoogleIcon } from '../../../assets';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ onSignup }: { onSignup: () => void }) => {
+  const [loading, setLoading] = useState(false);
+  const { navigate } = useNavigation<
+    NativeStackNavigationProp<{
+      Home: { fullName: string };
+    }>
+  >();
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Please enter a valid email')
@@ -33,9 +49,33 @@ export const LoginScreen = () => {
     },
     validationSchema: LoginSchema,
     onSubmit: (val: { email: string; password: string }) => {
-      Alert.alert(JSON.stringify(val, null, 2));
+      setLoading(true);
+      axios
+        .post('http://localhost:3000/auth/login', {
+          email: val.email,
+          password: val.password,
+        })
+        .then(res => {
+          console.log(res.data, 'response');
+          Alert.alert('User Logged in');
+          if (res.data.success) {
+            navigate('Home', {
+              fullName: res.data.data.user.fullName,
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err.response.data, 'error');
+          Alert.alert(err.response.data.message);
+        })
+        .finally(() => {
+          // if the credentials is correct or not It will always goes to the final state after API response
+          console.log('Finally');
+          setLoading(false);
+        });
     },
   });
+
   const isInvalidEmail = errors.email && touched.email;
   const isInvalidPassword = errors.password && touched.password;
   return (
@@ -76,7 +116,11 @@ export const LoginScreen = () => {
           !isValid || !dirty ? styles.disabledContainer : styles.buttonContainer
         }
       >
-        <Text style={styles.buttonText}>Login</Text>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.buttonText}>Login</Text>
+        )}
       </TouchableOpacity>
 
       <Text style={styles.subtitle}>or continue with</Text>
@@ -91,7 +135,10 @@ export const LoginScreen = () => {
         </View>
       </View>
       <Text style={styles.noAccountText}>
-        Don't have an account? <Text style={styles.signupText}>Sign up</Text>
+        Don't have an account?{' '}
+        <Text onPress={onSignup} style={styles.signupText}>
+          Sign up
+        </Text>
       </Text>
     </View>
   );

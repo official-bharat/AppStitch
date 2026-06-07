@@ -1,12 +1,21 @@
-import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import { styles } from '../styles';
 import { AppleIcon, GoogleIcon } from '../../../assets';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { useState } from 'react';
 
-export const SignupScreen = () => {
+export const SignupScreen = ({ onLogin }: { onLogin: () => void }) => {
   // now I am adding the validation schema for the signup form using yup
-
+  const [loading, setLoading] = useState<boolean>(false);
   const SignupSchema = Yup.object().shape({
     fullName: Yup.string().required('Required'),
     email: Yup.string()
@@ -34,8 +43,29 @@ export const SignupScreen = () => {
       password: '',
     },
     validationSchema: SignupSchema,
-    onSubmit: val => {
-      Alert.alert(JSON.stringify(val, null, 2));
+    onSubmit: (val, { resetForm }) => {
+      setLoading(true);
+      axios
+        .post('http://localhost:3000/auth/signup', {
+          email: val.email,
+          password: val.password,
+          fullName: val.fullName,
+        })
+        .then(res => {
+          console.log(res, 'repsonse');
+          if (res.data.success) {
+            Alert.alert('User Registered Successfully');
+            resetForm();
+          }
+        })
+        .catch(err => {
+          console.error(err, 'error');
+          console.error(err.response.data);
+          Alert.alert(err.response.data.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     },
   });
   // now I am adding the errors and touched properties to the formik hook to show the error messages when the user submits the form without filling the required fields or with invalid email or password less than 8 characters
@@ -49,8 +79,6 @@ export const SignupScreen = () => {
   // now I am adding the validation of submit button to disable it when the form is invalid or not touched
 
   const isSubmitDisabled = !(isValid && dirty);
-
-  console.log('values', values, errors);
   return (
     <View style={styles.formContainer}>
       <View style={styles.inputContainer}>
@@ -103,7 +131,11 @@ export const SignupScreen = () => {
           isSubmitDisabled ? styles.disabledContainer : styles.buttonContainer
         }
       >
-        <Text style={styles.buttonText}>Signup</Text>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.buttonText}>Signup</Text>
+        )}
       </TouchableOpacity>
 
       <Text style={styles.subtitle}>or login with</Text>

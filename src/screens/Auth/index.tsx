@@ -43,7 +43,11 @@ export const AuthScreen: React.FC = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        {isLogin ? <LoginScreen /> : <SignupScreen />}
+        {isLogin ? (
+          <LoginScreen onSignup={handleRegisterPress} />
+        ) : (
+          <SignupScreen onLogin={handleLoginPress} />
+        )}
       </View>
     </SafeAreaView>
   );

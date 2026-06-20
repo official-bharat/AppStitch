@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MapScreen } from '../screens/Map/Map';
 import { AuthScreen } from '../screens/Auth';
 import { TabAnimation } from '../screens/TabAnimation';
-import { AppleMusicGradient } from '../screens/AppleMusicGradient';
 import Home from '../screens/Home';
 
 const Stack = createNativeStackNavigator();
@@ -11,7 +10,7 @@ const Stack = createNativeStackNavigator();
 export const Routes = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Auth"
+      initialRouteName="AppleMusicGradient"
       screenOptions={{
         headerShown: false,
       }}
@@ -19,7 +18,6 @@ export const Routes = () => {
       <Stack.Screen name="Auth" component={AuthScreen} />
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="TabAnimation" component={TabAnimation} />
-      <Stack.Screen name="AppleMusicGradient" component={AppleMusicGradient} />
       <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
   );

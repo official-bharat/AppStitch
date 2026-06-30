@@ -1424,6 +1424,29 @@ PODS:
     - ReactNativeDependencies
   - react-native-geolocation-service (5.3.1):
     - React
+  - react-native-image-palette (1.2.2):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - swift-vibrant (~> 1.0.0)
+    - Yoga
   - react-native-safe-area-context (5.7.0):
     - hermes-engine
     - RCTRequired
@@ -1992,6 +2015,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - swift-vibrant (1.0.0)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2036,6 +2060,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
+  - "react-native-image-palette (from `../node_modules/@somesoap/react-native-image-palette`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-networking (from `../node_modules/react-native/ReactCommon/react/networking`)
@@ -2075,6 +2100,10 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - SimpleBiometrics (from `../node_modules/react-native-simple-biometrics`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+SPEC REPOS:
+  trunk:
+    - swift-vibrant
 
 EXTERNAL SOURCES:
   AsyncStorage:
@@ -2158,6 +2187,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
+  react-native-image-palette:
+    :path: "../node_modules/@somesoap/react-native-image-palette"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-NativeModulesApple:
@@ -2278,6 +2309,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: f4ee8c62e0ef8359d139124f35a471518a172cd3
   React-microtasksnativemodule: d1956f0eec54c619b63a379520fb4c618a55ccb9
   react-native-geolocation-service: 32b2c2a3b91e70ce2a8d0c684801aaeb0a07e0ec
+  react-native-image-palette: defed4dd31215312fadd86805854f4fd705b375f
   react-native-safe-area-context: ae7587b95fb580d1800c5b0b2a7bd48c2868e67a
   React-NativeModulesApple: 5ba0903927f6b8d335a091700e9fda143980f819
   React-networking: 3a4b7f9ed2b2d1c0441beacb79674323a24bcca6
@@ -2316,6 +2348,7 @@ SPEC CHECKSUMS:
   RNScreens: 6cb648bdad8fe9bee9259fe144df95b6d1d5b707
   RNSVG: c69f7709226108f5eb89b5aa8833c17a36345468
   SimpleBiometrics: 9ab23b8b223387e4e8478a680ecaccadbd72e74b
+  swift-vibrant: 3def73c5c281db74f420ec386590d9c1c5b0995c
   Yoga: c0b3f2c7e8d3e327e450223a2414ca3fa296b9a2
 
 PODFILE CHECKSUM: ba83d008c7837593464c105293ce410ccc754d95

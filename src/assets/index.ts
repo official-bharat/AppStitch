@@ -16,4 +16,4 @@ export { VolumeHighIcon } from './icons/volumeHigh';
 export { LyricsIcon } from './icons/lyrics';
 export { AirPlayIcon } from './icons/airplay';
 export { QueueIcon } from './icons/queue';
-
+export { CheckmarkIcon } from './icons/checkmark';
